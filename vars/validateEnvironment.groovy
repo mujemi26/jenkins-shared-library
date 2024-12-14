@@ -1,11 +1,8 @@
 def call() {
     sh '''
-        echo "Checking required tools..."
+        echo "Validating environment..."
         docker version
         kubectl version --client
         kind version
-
-        echo "Checking cluster status..."
-        kind get clusters
     '''
 }
