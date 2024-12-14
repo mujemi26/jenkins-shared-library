@@ -1,14 +1,12 @@
-def call(String kubeConfig) {
-    withCredentials([file(credentialsId: kubeConfig, variable: 'KUBECONFIG_FILE')]) {
+def call(String kubeconfigFile) {
+    withCredentials([file(credentialsId: kubeconfigFile, variable: 'KUBECONFIG')]) {
         sh """
-            export KUBECONFIG=${KUBECONFIG_FILE}
+            export KUBECONFIG=${KUBECONFIG}
+            echo "Verifying deployment..."
+            
             kubectl get pods -l app=lab-app
-            for pod in \$(kubectl get pods -l app=lab-app -o name); do
-                kubectl logs \$pod
-            done
-            kubectl get service lab-app-service
+            kubectl get services
             curl -v http://localhost:30080 || true
         """
     }
 }
-
